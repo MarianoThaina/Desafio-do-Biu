@@ -1,0 +1,50 @@
+- Código usado no desafio 1:
+SELECT Alunos.nome AS aluno, Escolas.nome AS escola
+FROM Alunos
+JOIN Escolas ON Alunos.fk_id_escola = Escolas.id_escola;
+
+
+
+- Código usado no desafio 2:
+SELECT 
+    Alunos.nome AS aluno,
+    COALESCE(ROUND(AVG(CASE WHEN Notas.semestre = 2 THEN Notas.nota END), 2), 0.00) AS media_segundo_semestre
+FROM Alunos
+LEFT JOIN Notas ON Alunos.id_aluno = Notas.fk_id_aluno
+GROUP BY Alunos.nome
+ORDER BY media_segundo_semestre DESC;
+
+
+
+- Código usado no desafio 3:
+SELECT 
+    Escolas.nome AS escola,
+    COUNT(Alunos.id_aluno) AS total_alunos,
+    ROUND(AVG(Alunos.ano_escolar), 2) AS media_ano_escolar
+FROM Escolas
+LEFT JOIN Alunos ON Alunos.fk_id_escola = Escolas.id_escola
+GROUP BY Escolas.nome;
+
+
+
+- Código usado no desafio 4: 
+SELECT 
+    Professores.nome AS professor,
+    COUNT(Disciplinas.id_disciplina) AS qtd_disciplinas
+FROM Professores
+JOIN Disciplinas ON Disciplinas.fk_id_professor = Professores.id_professor
+GROUP BY Professores.nome
+HAVING COUNT(Disciplinas.id_disciplina) > 1;
+
+
+
+- Código usado no desafio 5:
+SELECT 
+    a.nome AS aluno,
+    ROUND(AVG(CASE WHEN n.semestre = 1 THEN n.nota END), 2) AS media_1_semestre,
+    ROUND(AVG(CASE WHEN n.semestre = 2 THEN n.nota END), 2) AS media_2_semestre
+FROM Alunos a
+JOIN Notas n ON a.id_aluno = n.fk_id_aluno
+GROUP BY a.id_aluno, a.nome
+HAVING AVG(CASE WHEN n.semestre = 2 THEN n.nota END) > AVG(CASE WHEN n.semestre = 1 THEN n.nota END);
+
